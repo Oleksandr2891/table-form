@@ -1,4 +1,5 @@
 import { FC } from "react";
+import Button from "./Button";
 import { ColumnNumber, configTable } from "./Header";
 import { IData } from "./Table";
 
@@ -7,52 +8,49 @@ interface Props {
 }
 
 const Row: FC<Props> = ({ rowData }) => {
-    console.log('rowData', rowData)
-
-    const baseRow = configTable.map((column, idx ) => {
-        console.log(column);
-        switch (column.columnNumber) {
-            case ColumnNumber.Id: {
-                return <td><button>Del</button></td>
+        const baseRow = configTable.map((column, idx): JSX.Element | undefined => {
+            switch (column.columnNumber) {
+                case ColumnNumber.Id: {
+                    return <td key={`${rowData.rowNumer}${idx}`}><Button onHandleClick={()=>{}} classBtn={'notFill'} icon={"iconDel"}/></td>
+                }
+                case ColumnNumber.Company: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.company}</td>
+                }
+                case ColumnNumber.Name: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.name}</td>
+                }
+                case ColumnNumber.Additional: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.additional}</td>
+                }
+                case ColumnNumber.Street: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.street}</td>
+                }
+                case ColumnNumber.PostalCode: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.postalCode}</td>
+                }
+                case ColumnNumber.Country: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.country}</td>
+                }
+                case ColumnNumber.Iban: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.iban}</td>
+                }
+                case ColumnNumber.Bic: {
+                    return <td key={`${column.columnNumber}${idx}`}>{rowData.bic}</td>
+                }
+                case ColumnNumber.BankName: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.bankName}</td>
+                }
+                case ColumnNumber.Fax: {
+                    return <td key={`${rowData.rowNumer}${idx}`}>{rowData.fax}</td>
+                }
+                case ColumnNumber.Email: {
+                    return <td key={`${rowData.rowNumer}+${idx}`}>{rowData.email}</td>
+                }
+                case ColumnNumber.Birthday: {
+                    return <td key={`${rowData.rowNumer}+${idx}`}>{rowData.birthday}</td>
+                }
             }
-            case ColumnNumber.Company: {
-                return <td>{rowData.company}</td>
-            }
-            case ColumnNumber.Name: {
-                return <td>{rowData.name}</td>
-            }
-            case ColumnNumber.Additional: {
-                return <td>{rowData.additional}</td>
-            }
-            case ColumnNumber.Street: {
-                return <td>{rowData.street}</td>
-            }
-            case ColumnNumber.PostalCode: {
-                return <td>{rowData.postalCode}</td>
-            }
-            case ColumnNumber.Country: {
-                return <td>{rowData.country}</td>
-            }
-            case ColumnNumber.Iban: {
-                return <td>{rowData.iban}</td>
-            }
-            case ColumnNumber.Bic: {
-                return <td>{rowData.bic}</td>
-            }
-            case ColumnNumber.BankName: {
-                return <td>{rowData.bankName}</td>
-            }
-            case ColumnNumber.Fax: {
-                return <td>{rowData.fax}</td>
-            }
-            case ColumnNumber.Email: {
-                return <td>{rowData.email}</td>
-            }
-            case ColumnNumber.Birthday: {
-                return <td>{rowData.birthday}</td>
-            }
-        }
-    })
+        })
     return (
         <tr>{baseRow}</tr>
     );
