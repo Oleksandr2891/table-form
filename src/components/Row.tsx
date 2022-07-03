@@ -8,6 +8,7 @@ interface Props {
 }
 
 const Row: FC<Props> = ({ rowData }) => {
+    // eslint-disable-next-line 
         const baseRow = configTable.map((column, idx): JSX.Element | undefined => {
             switch (column.columnNumber) {
                 case ColumnNumber.Id: {

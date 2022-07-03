@@ -1,47 +1,12 @@
 import Portal from "./Portal";
-import { DeepRequired, FieldErrorsImpl, Path, useForm, UseFormRegister } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import Button from "./Button";
 import '../style/ModalWindow.css';
-import React from "react";
+import { useState, useEffect } from "react";
+import { IFormConfig, IFormData, Step, TPartFormData } from "../assets/types";
+import Input from "./Input";
+import Select from "./Select";
 
-
-interface IElementButton {
-        title: string,
-        type: "button" | "submit" | "reset" | undefined,
-        classBtn: "notFill" | "fill"
-}
-
-
-interface IElementSelect {
-    label: string
-    regLabel: Path<IFormData>,
-    optionSelect:  {
-                        val: string,
-                        title: string
-                    }[]
-}
-
-
-interface IElementInput {
-    type: string,
-    label: string,
-    regLabel: Path<IFormData>,
-    val?: {[key: string]: any},
-    error?: boolean
-}
-
-interface IElementConfigForm{
-    titleForm: string,
-    inputForm: IElementInput[],
-    selectForm?: IElementSelect[],
-    buttonsForm?: IElementButton[]
-
-}
-
-
-interface IFormConfig {
-    [key: string]: IElementConfigForm,
-}
 
 const formConfing: IFormConfig = {
     firstStep: {
@@ -79,8 +44,8 @@ const formConfing: IFormConfig = {
         ],
         selectForm: [
             {
-                label: 'Additional',
-                regLabel: 'additional',
+                label: 'Country',
+                regLabel: 'country',
                 optionSelect: [
                     {
                         val: "ukraine",
@@ -118,7 +83,7 @@ const formConfing: IFormConfig = {
             }
         ]
     },
-    secodStep: {
+    secondStep: {
         titleForm: "Bank Data",
         inputForm: [
             {
@@ -209,58 +174,82 @@ interface Props {
     onClose: (value: boolean) => void;
 }
 
-interface IFormData {
-    company: string,
-    name: string,
-    additional: string;
-    street: string;
-    postalCode: string;
-    country: string;
-    iban: string;
-    bic: string;
-    bankName: string;
-    fax: string;
-    email: string;
-    birthday: string;
-    homepage: string;
-};
-
-type InputProps = {
-    type: string,
-    label: string;
-    regLabel: Path<IFormData>;
-    register: UseFormRegister<IFormData>;
-    val: { [key: string]: any } | undefined;
-    errors: FieldErrorsImpl<DeepRequired<IFormData>>;
-    error?: boolean
-};
-
-const Input = ({ type, label, regLabel, register, val, errors, error }: InputProps) => (
-        <>
-            <label>{label}</label>
-        <input type={type} {...register(regLabel, val)} />
-        {error && errors[regLabel] && <i>This field is required</i>}
-        </>
-)
-    
-const Select = React.forwardRef<
-    HTMLSelectElement,  IElementSelect & ReturnType<UseFormRegister<IFormData>>
-    >(({ onChange, onBlur, name, label, regLabel, optionSelect}, ref) => (
-    <>
-        <label>{label}</label>
-            <select name={name} ref={ref} onChange={onChange} onBlur={onBlur} >
-                {optionSelect.map((element, idx) => {
-                    return <option key={idx} value={element.val}>{element.title}</option>
-            })}
-        </select>
-    </>
-));
-
 const ModalWindow = ({onClose}:Props) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<IFormData>();
-    const onSubmit = handleSubmit(data => console.log(data));
+    const { register,
+        handleSubmit,
+        reset,
+        setValue,
+        formState: { errors } } = useForm<IFormData>();
+    
+    const [currentStep, setCurrentStep] = useState<Step>('firstStep');
+    const [resetCurrentStep, setResetCurrentStep] = useState<Step | ''>("");
+    const [firstForm, setFirstForm] = useState<TPartFormData>({});
+    const [secondForm, setSecondForm] = useState<TPartFormData>({});
+    const [thirdForm, setThirdForm] = useState<TPartFormData>({});
+    
+    useEffect(() => {
+        switch (resetCurrentStep) {
+            case 'firstStep':
+                setFirstForm({})
+                    reset({
+                        company: '',
+                        name: '',
+                        additional: '',
+                        street: '',
+                        postalCode: '',
+                        country: ''
+                    });
+                setResetCurrentStep("");
+                    break;
+            case 'secondStep':
+                setSecondForm({})
+                    reset({
+                        iban: '',
+                        bic: '',
+                        bankName: ''
+                    });
+                setResetCurrentStep("")
+                    break;
+            case 'thirdStep':
+                setThirdForm({})
+                    reset({
+                        fax: '',
+                        email: '',
+                        birthday: '',
+                        homepage: '',
+                    });
+                setResetCurrentStep("")
+                    break;
+                    default:
+                break;
+            }
+    }, [reset, resetCurrentStep]);
+        
+    const onSubmit = handleSubmit(data => {
+            const Row = {...firstForm, ...secondForm, ...thirdForm}
+            switch (currentStep) {
+                case 'firstStep':
+                    setFirstForm(data);
+                    setCurrentStep('secondStep');
+                    break;
+                case 'secondStep':
+                    setSecondForm(data);
+                    setCurrentStep('thirdStep');
+                    break;
+                case 'thirdStep':
+                    setThirdForm(data);
+                    setResetCurrentStep('firstStep');
+                    setResetCurrentStep('secondStep');
+                    setResetCurrentStep('thirdStep');
+                    console.log(Row);
+                    onClose(false);
+                    break;
+                default:
+                    break;
+            }
+        });
 
-    const formCreator = (step: 'firstStep' | 'secodStep' | 'thirdStep') => {
+    const formCreator = (step: Step) => {
         const { titleForm, inputForm, selectForm, buttonsForm } = formConfing[step];
         return (
         <>
@@ -288,74 +277,65 @@ const ModalWindow = ({onClose}:Props) => {
                         />
                     })}
                     <div>
-                    {buttonsForm?.map((elem, idx) => { 
+                        {buttonsForm?.map((elem, idx) => { 
                         return  <Button
-                                key={`${elem.title}-${idx}`}
-                                classBtn={elem.classBtn}
-                                type ={elem.type}
-                                title={elem.title}
+                            key={`${elem.title}-${idx}`}
+                            classBtn={elem.classBtn}
+                            type={elem.type}
+                            title={elem.title}
+                            onHandleClick={(() => { ((elem.title === 'Previous') && returnToPreviosForm()) ||  ((elem.title === 'Cancel') && resetForms())})}
                             />
                     })}
                     </div>
                 </form>
         </>
-    )}
+        )
+    }
+    
+    const returnToPreviosForm = () => {
+            switch (currentStep) {
+                        case 'secondStep':
+                            setCurrentStep('firstStep');
+                            setValue("company", firstForm.company);
+                            setValue("name", firstForm.name);
+                            setValue("additional", firstForm.additional);
+                            setValue("street", firstForm.street);
+                            setValue("postalCode", firstForm.postalCode);
+                            setValue("country", firstForm.country);
+                            break;
+                case 'thirdStep':
+                            setCurrentStep('secondStep');
+                            setValue("iban", secondForm.iban);
+                            setValue("bic", secondForm.bic);
+                            setValue("bankName", secondForm.bankName);
+                            break;
+                        default:
+                            break;
+            }
+    }
+
+    const resetForms = () => {
+                    switch (currentStep) {
+                        case 'firstStep':
+                            setResetCurrentStep('firstStep');
+                            break;
+                        case 'secondStep':
+                            setResetCurrentStep('secondStep');
+                            break;
+                        case 'thirdStep':
+                            setResetCurrentStep('thirdStep');
+                            break;
+                        default:
+                            break;
+            }
+    }
 
     return (
         <Portal>
             {/* <div className="wrapper-modal" onClick={()=>onClose(false)}> */}
             <div className="wrapper-modal">
                 <div className="button-wrapper"><Button onHandleClick={() => onClose(false)} classBtn={'notFill'} icon={"iconClothe"} /></div>
-                { formCreator('firstStep')}
-                {/* <h3>Invoice Address</h3>
-                <form onSubmit={onSubmit} className="flexBox">
-                        <label>Company*</label>
-                        <input {...register("company", { required: true, minLength: 2 })} />
-                        { errors.company && <i>This field is required</i>}
-                        <label>Name*</label>
-                        <input {...register("name", { required: true, minLength: 2 })} />
-                        { errors.name && <i>This field is required</i>}
-                        <label>Additional</label>
-                        <input {...register("additional")} />
-                        <label>Street</label>
-                        <input {...register("street")} />
-                        <label>Postal Code</label>
-                        <input {...register("postalCode")} />
-                        <label>Country</label>
-                        <select {...register("country")} >
-                            <option value="ukraine">Ukraine</option>
-                            <option value="germany">Germany</option>
-                            <option value="france">France</option>
-                            <option value="unitedKingdom">United Kingdom</option>
-                            <option value="other">other</option>
-                        </select>
-                    <Button classBtn={'notFill'} title={"Next"} type={ "button"} />
-                </form>
-                <h3>Bank Data</h3>
-                <form onSubmit={onSubmit} className="flexBox">
-                        <label>IBAN*</label>
-                        <input {...register("iban", { required: true, minLength: 2 })} />
-                        { errors.iban && <i>This field is required</i>}
-                        <label>BIC*</label>
-                        <input {...register("bic", { required: true, minLength: 2 })} />
-                        { errors.bic && <i>This field is required</i>}
-                        <label>Bank Name*</label>
-                        <input {...register("bankName", { required: true, minLength: 2 })} />
-                        { errors.bankName && <i>This field is required</i>}
-                    <Button classBtn={'notFill'} title={"Next"} type={ "button"} />
-                </form>
-                <h3>Contact</h3>
-                <form onSubmit={onSubmit} className="flexBox">
-                        <label>FAX</label>
-                        <input {...register("fax")} />
-                        <label>E-mail</label>
-                        <input type="email" {...register("email")} />
-                        <label>Birthday</label>
-                        <input type="date" {...register("birthday")} />
-                        <label>Homepage</label>
-                        <input {...register("homepage")} />
-                    <Button classBtn={'notFill'} title={"Next"} type={ "submit"} />
-                </form> */}
+                { formCreator(currentStep)}
             </div>
         </Portal>
     );
