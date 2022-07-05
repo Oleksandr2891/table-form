@@ -60,3 +60,31 @@ export interface IFormData {
 
 export type TPartFormData = Partial<IFormData>;
 
+export interface IConfigTable{
+    columnNumber: number;
+    name: string;
+    minWidth: string;
+}
+
+export enum ColumnNumber {
+    Id=1,
+    Company,
+    Name,
+    Additional,
+    Street,
+    PostalCode,
+    Country,
+    Iban,
+    Bic,
+    BankName,
+    Fax,
+    Email,
+    Birthday,
+}
+
+export interface IState {
+    tableData: IFormData[];
+}
+
+
+

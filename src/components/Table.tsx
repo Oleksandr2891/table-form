@@ -2,7 +2,6 @@ import Header from "./Header";
 import TableBody from "./TableBody";
 import '../style/Table.css'
 
-
 const Table = ()=> {
     return (
         <div className="tableContainer">

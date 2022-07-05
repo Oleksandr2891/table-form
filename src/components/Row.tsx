@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { useAppDispatch } from "../assets/hooks/redux";
-import { IFormData } from "../assets/type/types";
+import { ColumnNumber, IFormData } from "../assets/type/types";
 import { tableDataSlice } from "../redux/reducer/tableData";
 import Button from "./Button";
-import { ColumnNumber, configTable } from "./Header";
+import { configTable } from "./Header";
 
 interface Props {
     rowData: IFormData;
@@ -12,9 +12,6 @@ interface Props {
 const Row: FC<Props> = ({ rowData }) => {
     const { removeRowData } = tableDataSlice.actions;
     const dispatch = useAppDispatch();
-
-
-
     // eslint-disable-next-line 
         const baseRow = configTable.map((column, idx): JSX.Element | undefined => {
             switch (column.columnNumber) {

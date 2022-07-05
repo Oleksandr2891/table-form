@@ -2,8 +2,8 @@ import { useState } from 'react';
 import './style/App.css';
 import Container from "./components/Container";
 import Table from './components/Table';
-import ModalWindow from './components/ModalWindow';
 import Button from './components/Button';
+import ModalWindow from './components/ModalWindow';
 
 
 function App() {

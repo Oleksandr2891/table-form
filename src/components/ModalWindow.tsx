@@ -1,13 +1,13 @@
-import Portal from "./Portal";
+import { useState, useEffect, MouseEvent } from "react";
+import { useAppDispatch, useAppSelector } from "../assets/hooks/redux";
 import {  useForm } from "react-hook-form";
+import Portal from "./Portal";
 import Button from "./Button";
 import '../style/ModalWindow.css';
-import { useState, useEffect, MouseEvent } from "react";
 import { IFormConfig, IFormData, Step, TPartFormData } from "../assets/type/types";
 import Input from "./Input";
 import Select from "./Select";
 import { tableDataSlice } from "../redux/reducer/tableData";
-import { useAppDispatch, useAppSelector } from "../assets/hooks/redux";
 
 
 const formConfing: IFormConfig = {
