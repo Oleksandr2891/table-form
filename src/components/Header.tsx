@@ -1,26 +1,5 @@
 import { FC } from "react";
-
-interface IConfigTable{
-    columnNumber: number;
-    name: string;
-    minWidth: string;
-}
-
-export enum ColumnNumber {
-    Id=1,
-    Company,
-    Name,
-    Additional,
-    Street,
-    PostalCode,
-    Country,
-    Iban,
-    Bic,
-    BankName,
-    Fax,
-    Email,
-    Birthday,
-}
+import { ColumnNumber, IConfigTable } from "../assets/type/types";
 
 
 export const configTable: IConfigTable[] = [

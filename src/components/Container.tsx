@@ -2,7 +2,7 @@ import '../style/Container.css'
 
 
 interface Props {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }
 
 const Container = ({ children }:Props) => {

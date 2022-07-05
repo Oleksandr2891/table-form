@@ -21,15 +21,15 @@ const Button = ({
     const currentClass = !!title ? `${classBtn} btnCommon` : "btnIcon";
     return (
         <div className="buttonWrapper">
-        <button
-            type={type}
-            className={`${currentClass}`}
-            onClick={onHandleClick}
-        >
-        {!!title && title}
-        {(icon === 'iconDel') && <span className={``}>{<img src={iconDel} alt="iconDel" />}</span>}
-        {(icon === 'iconClothe') && <span className={``}>{<img src={iconClothe} alt="iconDel" />}</span>}
-        </button>
+            <button
+                type={type}
+                className={`${currentClass}`}
+                onClick={onHandleClick}
+            >
+            {!!title && title}
+            {(icon === 'iconDel') && <span className={``}>{<img src={iconDel} alt="iconDel" />}</span>}
+            {(icon === 'iconClothe') && <span className={``}>{<img src={iconClothe} alt="iconDel" />}</span>}
+            </button>
         </div>
     );
 };
