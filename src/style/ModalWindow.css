@@ -1,0 +1,89 @@
+.wrapperModal {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -0);
+    width: 100vw;
+    height: calc(100vh);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E5B1B1;
+    z-index: 9999;
+}
+
+.windowWrapper {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 365px;
+    min-height: 321px;
+    overflow: auto;
+    background: #ffffff;
+    box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.24);
+    position: absolute;
+    padding: 30px 30px 60px 25px;
+    color: #2C2C2C;
+}
+
+.windowWrapper h3{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 38px;
+    margin-bottom: 30px;
+}
+
+.windowWrapper label{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.windowWrapper input,
+.windowWrapper select {
+    border: 0.25px solid #6B7074;
+    width: 236px;
+    height: 22px;
+}
+
+.flexBoxColumn .flexBoxRow {
+    margin-bottom: 4px;
+}
+
+.flexBoxColumn i {
+    font-size: 10px;
+    margin: 4px 76px;
+    color: #ff0000;
+}
+
+.buttonCloseWrapper {
+    position:absolute;
+    top: 14px;
+    right: 16px;
+}
+
+.buttonFunctionalWrapper {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.buttonFunctionalWrapper .buttonWrapper {
+    margin-left: 10px;
+}
+
+.flexBoxRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.flexBoxColumn {
+    display:flex;
+    flex-direction: column;
+}

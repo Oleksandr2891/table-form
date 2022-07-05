@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import './style/App.css';
+import Container from "./components/Container";
+import Table from './components/Table';
+import ModalWindow from './components/ModalWindow';
+import Button from './components/Button';
+
 
 function App() {
+  const [openForm, setOpenForm] = useState<boolean>(false);
+
+
+  const toggle = (value: boolean) => {
+    setOpenForm((prevState) => {
+      return prevState === value ? !prevState : value
+    });
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Container>
+        <div className='header'><Button onHandleClick={()=>toggle(true)} classBtn={'fill'} title={"Add"}/></div>
+        <Table />
+      {openForm && <ModalWindow onClose={toggle} />}
+      </Container>
+
   );
 }
 

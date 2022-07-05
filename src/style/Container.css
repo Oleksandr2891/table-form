@@ -1,0 +1,5 @@
+.conatinerWrapper {
+    padding: 0 20px;
+    overflow-x: auto;
+    height: 100vh;
+}
