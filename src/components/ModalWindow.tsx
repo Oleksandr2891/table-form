@@ -2,10 +2,12 @@ import Portal from "./Portal";
 import {  useForm } from "react-hook-form";
 import Button from "./Button";
 import '../style/ModalWindow.css';
-import { useState, useEffect } from "react";
-import { IFormConfig, IFormData, Step, TPartFormData } from "../assets/types";
+import { useState, useEffect, MouseEvent } from "react";
+import { IFormConfig, IFormData, Step, TPartFormData } from "../assets/type/types";
 import Input from "./Input";
 import Select from "./Select";
+import { tableDataSlice } from "../redux/reducer/tableData";
+import { useAppDispatch, useAppSelector } from "../assets/hooks/redux";
 
 
 const formConfing: IFormConfig = {
@@ -48,24 +50,28 @@ const formConfing: IFormConfig = {
                 regLabel: 'country',
                 optionSelect: [
                     {
-                        val: "ukraine",
+                        val: "",
+                        title: ""
+                    },
+                    {
+                        val: "Ukraine",
                         title: "Ukraine"
                     },
                     {
-                        val: "germany",
+                        val: "Germany",
                         title: "Germany"
                     },
                     {
-                        val: "france",
+                        val: "France",
                         title: "France"
                     },
                     {
-                        val: "unitedKingdom",
+                        val: "UnitedK ingdom",
                         title: "United Kingdom"
                     },
                     {
-                        val: "other",
-                        title: "other"
+                        val: "Other",
+                        title: "Other"
                     }
                 ]
             }
@@ -185,8 +191,22 @@ const ModalWindow = ({onClose}:Props) => {
     const [resetCurrentStep, setResetCurrentStep] = useState<Step | ''>("");
     const [firstForm, setFirstForm] = useState<TPartFormData>({});
     const [secondForm, setSecondForm] = useState<TPartFormData>({});
-    const [thirdForm, setThirdForm] = useState<TPartFormData>({});
-    
+
+    const { addRowData } = tableDataSlice.actions;
+    const dispatch = useAppDispatch();
+    const { tableData } = useAppSelector(state => state.tableDataReducer);
+
+    const newNumberRow = () => {
+        let maxNumber: number[] = [];
+            
+            tableData.forEach(elem => {
+                if (elem.rowNumber) {
+                    maxNumber.push(+elem.rowNumber)
+                }
+        });
+        return Math.max(...maxNumber)
+    }
+
     useEffect(() => {
         switch (resetCurrentStep) {
             case 'firstStep':
@@ -211,7 +231,6 @@ const ModalWindow = ({onClose}:Props) => {
                 setResetCurrentStep("")
                     break;
             case 'thirdStep':
-                setThirdForm({})
                     reset({
                         fax: '',
                         email: '',
@@ -226,7 +245,6 @@ const ModalWindow = ({onClose}:Props) => {
     }, [reset, resetCurrentStep]);
         
     const onSubmit = handleSubmit(data => {
-            const Row = {...firstForm, ...secondForm, ...thirdForm}
             switch (currentStep) {
                 case 'firstStep':
                     setFirstForm(data);
@@ -237,11 +255,10 @@ const ModalWindow = ({onClose}:Props) => {
                     setCurrentStep('thirdStep');
                     break;
                 case 'thirdStep':
-                    setThirdForm(data);
+                    dispatch(addRowData({ ...firstForm, ...secondForm, ...data, rowNumber: newNumberRow() + 1 }));
                     setResetCurrentStep('firstStep');
                     setResetCurrentStep('secondStep');
                     setResetCurrentStep('thirdStep');
-                    console.log(Row);
                     onClose(false);
                     break;
                 default:
@@ -252,9 +269,9 @@ const ModalWindow = ({onClose}:Props) => {
     const formCreator = (step: Step) => {
         const { titleForm, inputForm, selectForm, buttonsForm } = formConfing[step];
         return (
-        <>
-                {<h3>{titleForm}</h3>},
-                <form onSubmit={onSubmit} className="flexBox">
+        <div>
+                {<h3>{titleForm}</h3>}
+                <form onSubmit={onSubmit} className="flexBoxColumn">
                     {inputForm?.map((elem, idx) => {
                         return <Input
                             key={`${elem.label}-${idx}`}
@@ -276,7 +293,7 @@ const ModalWindow = ({onClose}:Props) => {
                             
                         />
                     })}
-                    <div>
+                    <div className='buttonFunctionalWrapper'>
                         {buttonsForm?.map((elem, idx) => { 
                         return  <Button
                             key={`${elem.title}-${idx}`}
@@ -288,9 +305,13 @@ const ModalWindow = ({onClose}:Props) => {
                     })}
                     </div>
                 </form>
-        </>
+        </div>
         )
     }
+
+    const onOverlayClick = ({ target, currentTarget }: MouseEvent) => {
+    target === currentTarget && onClose(false);
+    };
     
     const returnToPreviosForm = () => {
             switch (currentStep) {
@@ -332,10 +353,11 @@ const ModalWindow = ({onClose}:Props) => {
 
     return (
         <Portal>
-            {/* <div className="wrapper-modal" onClick={()=>onClose(false)}> */}
-            <div className="wrapper-modal">
-                <div className="button-wrapper"><Button onHandleClick={() => onClose(false)} classBtn={'notFill'} icon={"iconClothe"} /></div>
-                { formCreator(currentStep)}
+            <div className="wrapperModal" onClick={onOverlayClick}>
+                <div className="windowWrapper">
+                    <div className="buttonCloseWrapper"><Button onHandleClick={() => onClose(false)} classBtn={'notFill'} icon={"iconClothe"} /></div>
+                    {formCreator(currentStep)}
+                </div>
             </div>
         </Portal>
     );

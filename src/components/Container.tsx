@@ -1,3 +1,5 @@
+import '../style/Container.css'
+
 
 interface Props {
   children: React.ReactNode;
@@ -5,7 +7,7 @@ interface Props {
 
 const Container = ({ children }:Props) => {
     return (
-        <div>
+        <div className='conatinerWrapper'>
             {children}
         </div>
     );

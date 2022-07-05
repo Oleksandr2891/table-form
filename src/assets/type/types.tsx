@@ -42,6 +42,7 @@ export type Step = 'firstStep' | 'secondStep' | 'thirdStep';
 
 
 export interface IFormData {
+    rowNumber?: number,
     company?: string,
     name?: string,
     additional?: string;

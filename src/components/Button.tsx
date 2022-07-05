@@ -1,5 +1,6 @@
 import iconDel from '../assets/svg/icon-Del.svg'
 import iconClothe from '../assets/svg/icon-Clothe.svg'
+import "../style/Button.css"
 
 
 interface Props {
@@ -17,12 +18,12 @@ const Button = ({
     type = "button",
     icon
 }: Props) => {
-
+    const currentClass = !!title ? `${classBtn} btnCommon` : "btnIcon";
     return (
-        <div className="ButtonWrapper">
+        <div className="buttonWrapper">
         <button
             type={type}
-            className={`${classBtn} btnCommon`}
+            className={`${currentClass}`}
             onClick={onHandleClick}
         >
         {!!title && title}

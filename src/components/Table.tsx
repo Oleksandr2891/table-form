@@ -1,35 +1,16 @@
-import { FC } from "react";
 import Header from "./Header";
-import DataTable from "../DataTable.json"
 import TableBody from "./TableBody";
-
-export interface IData {
-    rowNumer: number,
-    company: string,
-    name: string,
-    additional: string,
-    street: string,
-    postalCode: string,
-    country: string,
-    iban: string,
-    bic: string,
-    bankName: string,
-    fax: string,
-    email: string,
-    birthday: string
-}
-
-// interface Props {
-//   data: IData[];
-// }
+import '../style/Table.css'
 
 
-const Table: FC = ()=> {
+const Table = ()=> {
     return (
-        <table>
-            <Header/>
-            <TableBody data={DataTable}/>
-        </table>
+        <div className="tableContainer">
+            <table className="tableWrapper">
+                <Header/>
+                <TableBody/>
+            </table>
+        </div>
     );
 }
 

@@ -1,0 +1,23 @@
+.btnCommon {
+    border: 1px solid #83BA63;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 5px 14px;
+}
+
+.buttonWrapper .fill{
+    background-color: #83BA63;
+    color: #ffffff;
+}
+
+.buttonWrapper .notFill {
+    background-color: transparent;
+    color: #83BA63;
+}
+
+.btnIcon {
+    border: none;
+    background-color: transparent;
+}

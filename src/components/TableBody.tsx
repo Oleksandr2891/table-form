@@ -1,18 +1,17 @@
-import { FC } from "react";
+import { useAppSelector } from "../assets/hooks/redux";
 import Row from "./Row";
-import { IData } from "./Table";
 
 
 
-interface Props {
-  data: IData[];
-}
 
-const TableBody: FC<Props> = ({data})=> {
+const TableBody = () => {
+  const { tableData } = useAppSelector(state => state.tableDataReducer);
+ 
+  console.log('tableData', tableData);
     return (
         <tbody>
-        {data.map((row) => {
-          return <Row key={row.rowNumer} rowData={row} />
+        {tableData.map((row) => {
+          return <Row key={row.rowNumber} rowData={row} />
         })}
         </tbody>
     );

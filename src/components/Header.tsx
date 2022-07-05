@@ -27,7 +27,7 @@ export const configTable: IConfigTable[] = [
     {   
         columnNumber: ColumnNumber.Id,
         name: '',
-        minWidth: '150px',
+        minWidth: '58px',
     },
     {
         columnNumber: ColumnNumber.Company,
@@ -41,53 +41,53 @@ export const configTable: IConfigTable[] = [
     },
     {
         columnNumber: ColumnNumber.Additional,
-        name: 'additional',
+        name: 'Additional',
         minWidth: '150px',
     },
     {
         columnNumber: ColumnNumber.Street,
         name: 'Street',
-        minWidth: '150px'
+        minWidth: '100px'
     },
     {
         columnNumber: ColumnNumber.PostalCode,
         name: 'Postal Code',
-        minWidth: '150px',
+        minWidth: '95px',
     },
     {
         columnNumber: ColumnNumber.Country,
         name: 'Country',
-        minWidth: '150px',
+        minWidth: '90px',
     },
     {
         columnNumber: ColumnNumber.Iban,
         name: 'IBAN',
-        minWidth: '150px',
+        minWidth: '100px',
     },
     {
         columnNumber: ColumnNumber.Bic,
         name: 'BIC',
-        minWidth: '150px',
+        minWidth: '100px',
     },
     {
         columnNumber: ColumnNumber.BankName,
         name: 'Bank Name',
-        minWidth: '150px',
+        minWidth: '90px',
     },
     {
         columnNumber: ColumnNumber.Fax,
         name: 'Fax',
-        minWidth: '150px',
+        minWidth: '100px',
     },
     {
         columnNumber: ColumnNumber.Email,
         name: 'E-mail',
-        minWidth: '150px',
+        minWidth: '100px',
     },
     {
         columnNumber: ColumnNumber.Birthday,
         name: 'Birthday',
-        minWidth: '150px',
+        minWidth: '80px',
     },
 ]
 
@@ -97,7 +97,7 @@ const Header: FC = ()=> {
         <thead>
             <tr>
                 {configTable.map((column) => {
-                return <th key={column.columnNumber}>{ column.name }</th>
+                    return <th key={column.columnNumber} style={{minWidth: `${column.minWidth}`}}>{ column.name }</th>
                 })}
             </tr>
         </thead>

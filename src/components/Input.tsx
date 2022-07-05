@@ -1,5 +1,5 @@
 import { DeepRequired, FieldErrorsImpl, Path, UseFormRegister } from "react-hook-form";
-import { IFormData } from "../assets/types";
+import { IFormData } from "../assets/type/types";
 
 type InputProps = {
     type: string,
@@ -12,11 +12,13 @@ type InputProps = {
 };
 
 const Input = ({ type, label, regLabel, register, val, errors, error }: InputProps) => (
-        <>
+    <>
+        <div className="flexBoxRow">
             <label>{label}</label>
-        <input type={type} {...register(regLabel, val)} />
-        {error && errors[regLabel] && <i>This field is required</i>}
-        </>
+            <input type={type} {...register(regLabel, val)} />
+        </div>
+            {error && errors[regLabel] && <i>This field is required</i>}
+    </>
 )
 
 export default Input

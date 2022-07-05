@@ -19,7 +19,7 @@ function App() {
 
   return (
       <Container>
-        <div className='header'><Button onHandleClick={()=>toggle(true)} classBtn={'notFill'} title={"Add"}/></div>
+        <div className='header'><Button onHandleClick={()=>toggle(true)} classBtn={'fill'} title={"Add"}/></div>
         <Table />
       {openForm && <ModalWindow onClose={toggle} />}
       </Container>
